@@ -162,46 +162,6 @@ This toolbox is designed for educational purposes to help understand:
 4. Ensure all tests pass
 5. Submit a pull request
 
-## Publishing to PyPI
-
-### Prerequisites
-```bash
-pip install build twine
-```
-
-### Build the Package
-```bash
-# Clean previous builds
-rm -rf build/ dist/ *.egg-info/
-
-# Build source and wheel distributions
-python -m build
-```
-
-### Test on PyPI Test Repository
-```bash
-# Upload to Test PyPI first
-twine upload --repository testpypi dist/*
-
-# Test installation from Test PyPI
-pip install --index-url https://test.pypi.org/simple/ cipher-toolbox
-```
-
-### Publish to PyPI
-```bash
-# Upload to production PyPI
-twine upload dist/*
-
-# Verify installation
-pip install cipher-toolbox
-```
-
-### Version Management
-Update version in `pyproject.toml` before publishing:
-```toml
-version = "0.1.1"  # Increment version
-```
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
