@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cipher-toolbox"
+version = "0.1.0"
+description = "Educational cipher toolbox for encryption and decryption"
+authors = [
+    { name="Gabriel Dakinah Vincent", email="gabriel@example.com" }
+]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Education",
+]
+keywords = ["cryptography", "cipher", "encryption", "decryption", "education", "caesar", "vigenere", "aes", "rsa"]
+dependencies = [
+    "cryptography>=41.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox"
+Repository = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox"
+Issues = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox/issues"
+Documentation = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox#readme"
+
+[project.scripts]
+cipher-tool = "cipher_tool.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
