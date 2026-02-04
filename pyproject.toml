@@ -11,14 +11,13 @@ authors = [
 ]
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Education",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -28,7 +27,7 @@ classifiers = [
 ]
 keywords = ["cryptography", "cipher", "encryption", "decryption", "education", "caesar", "vigenere", "aes", "rsa"]
 dependencies = [
-    "cryptography>=3.4.8"
+    "cryptography>=41.0.0"
 ]
 
 [project.urls]
