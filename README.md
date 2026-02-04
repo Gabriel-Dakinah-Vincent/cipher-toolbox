@@ -154,13 +154,13 @@ This toolbox is designed for educational purposes to help understand:
 
 ⚠️ **Warning**: This implementation is for educational purposes only. Do not use these implementations for securing sensitive data in production environments. Use well-tested, production-ready cryptographic libraries instead.
 
+## Contributors
+
+- [Gabriel Dakinah Vincent](https://github.com/Gabriel-Dakinah-Vincent) - Creator
+
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new ciphers
-4. Ensure all tests pass
-5. Submit a pull request
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 

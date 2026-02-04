@@ -44,6 +44,8 @@ cipher-tool = "cipher_tool.cli:main"
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
 ]
 
 [tool.setuptools.packages.find]
