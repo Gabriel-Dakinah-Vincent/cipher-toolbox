@@ -28,7 +28,7 @@ classifiers = [
 ]
 keywords = ["cryptography", "cipher", "encryption", "decryption", "education", "caesar", "vigenere", "aes", "rsa"]
 dependencies = [
-    "cryptography>=41.0.0"
+    "cryptography>=3.4.8"
 ]
 
 [project.urls]
