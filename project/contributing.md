@@ -35,10 +35,12 @@ Set up a Python development environment for the `cipher-toolbox` package. You wi
 1. Fork the repository.
 2. Clone your fork:
 
+{% code title="Clone the repo" %}
 ```bash
 git clone https://github.com/yourusername/cipher-toolbox.git
 cd cipher-toolbox
 ```
+{% endcode %}
 {% endstep %}
 
 {% step %}
@@ -46,9 +48,11 @@ cd cipher-toolbox
 
 Use a virtual environment for Python dependency isolation.
 
+{% code title="Create a virtualenv" %}
 ```bash
 python -m venv venv
 ```
+{% endcode %}
 
 * Windows: `venv\Scripts\activate`
 * macOS/Linux: `source venv/bin/activate`
@@ -59,9 +63,11 @@ python -m venv venv
 
 Install the package in editable mode with development dependencies.
 
+{% code title="Install dev dependencies" %}
 ```bash
 python -m pip install -e .[dev]
 ```
+{% endcode %}
 {% endstep %}
 {% endstepper %}
 
@@ -69,6 +75,7 @@ python -m pip install -e .[dev]
 
 Run the unit test suite before opening a pull request.
 
+{% code title="Run tests" %}
 ```bash
 # Optional: upgrade pip if you hit install issues
 python -m pip install --upgrade pip
@@ -79,6 +86,7 @@ pytest tests/ -v
 # Run tests with coverage
 pytest tests/ --cov=cipher_tool
 ```
+{% endcode %}
 
 ### How to contribute
 
@@ -119,6 +127,7 @@ Cipher Toolbox includes classical and modern cipher algorithms. New cipher imple
 
 #### 2) Implement the cipher class
 
+{% code title="Cipher implementation skeleton" %}
 ```python
 # cipher_tool/classical/substitution/mycipher/model.py
 from cipher_tool.core.base import BaseCipher
@@ -126,18 +135,20 @@ from cipher_tool.core.base import BaseCipher
 class MyCipher(BaseCipher):
     def __init__(self, key="default"):
         self.key = key
-    
+
     def encrypt(self, text: str) -> str:
         # Implementation here
         pass
-    
+
     def decrypt(self, text: str) -> str:
         # Implementation here
         pass
 ```
+{% endcode %}
 
 #### 3) Register the cipher
 
+{% code title="Register the cipher" %}
 ```python
 # cipher_tool/core/registry.py
 from cipher_tool.classical.substitution.mycipher.model import MyCipher
@@ -147,9 +158,11 @@ CIPHER_REGISTRY = {
     "mycipher": MyCipher,
 }
 ```
+{% endcode %}
 
 #### 4) Add tests
 
+{% code title="Add tests" %}
 ```python
 # tests/test_ciphers.py
 from cipher_tool import encrypt, decrypt
@@ -160,6 +173,7 @@ def test_mycipher():
     decrypted = decrypt("mycipher", ciphertext, key="mykey")
     assert decrypted == plaintext
 ```
+{% endcode %}
 
 #### Code style
 

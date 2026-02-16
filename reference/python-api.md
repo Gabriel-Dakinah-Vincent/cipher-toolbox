@@ -6,12 +6,15 @@ description: Programmatic usage via encrypt() and decrypt().
 
 ### Install
 
+{% code title="Install (Python)" %}
 ```bash
 pip install cipher-toolbox
 ```
+{% endcode %}
 
 ### Basic usage
 
+{% code title="Basic usage" %}
 ```python
 from cipher_tool import encrypt, decrypt
 
@@ -21,6 +24,7 @@ plaintext = decrypt("caesar", ciphertext, shift=3)
 print(ciphertext)  # KHOOR ZRUOG
 print(plaintext)   # HELLO WORLD
 ```
+{% endcode %}
 
 ### Input and output formats
 
@@ -32,6 +36,7 @@ print(plaintext)   # HELLO WORLD
 
 ### Error handling
 
+{% code title="Error handling" %}
 ```python
 from cipher_tool import encrypt
 
@@ -40,6 +45,7 @@ try:
 except ValueError as e:
     print(e)
 ```
+{% endcode %}
 
 <details>
 
@@ -47,6 +53,7 @@ except ValueError as e:
 
 #### Classical
 
+{% code title="Classical ciphers" %}
 ```python
 from cipher_tool import encrypt, decrypt
 
@@ -55,9 +62,11 @@ print(encrypt("affine", "HELLO", a=5, b=8))
 print(encrypt("vigenere", "HELLO WORLD", key="SECRET"))
 print(encrypt("railfence", "HELLO WORLD", rails=3))
 ```
+{% endcode %}
 
 #### Modern
 
+{% code title="Modern primitives" %}
 ```python
 from cipher_tool import encrypt
 
@@ -66,9 +75,11 @@ print(encrypt("aes", "Hello World", key="mypassword"))  # varies per run
 print(encrypt("chacha20", "Hello World", key="mypassword"))  # varies per run
 print(encrypt("rsa", "HELLO", key_size=2048))  # varies per run
 ```
+{% endcode %}
 
 #### Batch processing
 
+{% code title="Batch processing" %}
 ```python
 from cipher_tool import encrypt, decrypt
 
@@ -81,5 +92,6 @@ decrypted = [decrypt("vigenere", msg, key=key) for msg in encrypted]
 print(encrypted)
 print(decrypted)
 ```
+{% endcode %}
 
 </details>

@@ -13,6 +13,7 @@ A practical cipher toolbox for learning encryption and decryption.
 
 {% tabs %}
 {% tab title="CLI" %}
+{% code title="CLI quick start" %}
 ```bash
 # Install from PyPI
 pip install cipher-toolbox
@@ -28,9 +29,11 @@ cipher-tool encrypt caesar "HELLO WORLD" --shift 3
 cipher-tool decrypt caesar "KHOOR ZRUOG" --shift 3
 # HELLO WORLD
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Python" %}
+{% code title="Python quick start" %}
 ```python
 from cipher_tool import encrypt, decrypt
 
@@ -40,6 +43,7 @@ plaintext = decrypt("caesar", ciphertext, shift=3)
 print(ciphertext)  # KHOOR ZRUOG
 print(plaintext)   # HELLO WORLD
 ```
+{% endcode %}
 {% endtab %}
 {% endtabs %}
 
