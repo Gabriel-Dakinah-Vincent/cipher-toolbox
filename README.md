@@ -47,6 +47,79 @@ print(plaintext)   # HELLO WORLD
 {% endtab %}
 {% endtabs %}
 
+### pip usage
+
+Use `python -m pip` if `pip` points at the wrong Python.
+
+{% code title="Install and upgrade" %}
+```bash
+# Install from PyPI
+pip install cipher-toolbox
+
+# Upgrade to the newest release
+pip install --upgrade cipher-toolbox
+
+# Install a specific version
+pip install "cipher-toolbox==1.2.3"
+
+# Reinstall (useful for broken environments)
+pip install --force-reinstall cipher-toolbox
+
+# Remove it
+pip uninstall cipher-toolbox
+```
+{% endcode %}
+
+{% code title="Version pinning (examples)" %}
+```bash
+# Exact pin (most reproducible)
+pip install "cipher-toolbox==1.2.3"
+
+# Compatible range (allows bugfix updates, blocks majors)
+pip install "cipher-toolbox>=1.2.3,<2"
+```
+{% endcode %}
+
+{% code title="Discover what you have / what exists" %}
+```bash
+# Show installed package metadata
+pip show cipher-toolbox
+
+# List installed files (site-packages paths)
+pip show -f cipher-toolbox
+
+# List all versions known to your configured index
+pip index versions cipher-toolbox
+```
+{% endcode %}
+
+{% code title="Download (offline-friendly)" %}
+```bash
+# Download wheels/sdists without installing (current directory)
+pip download cipher-toolbox
+
+# Download into a dedicated folder
+pip download -d ./packages cipher-toolbox
+
+# Install from a downloaded wheel
+pip install ./packages/cipher_toolbox-*.whl
+```
+{% endcode %}
+
+{% code title="Inspect wheel metadata (METADATA)" %}
+```bash
+# Wheel filenames usually use underscores, not hyphens
+ls -1 cipher*toolbox*.whl
+
+unzip cipher_toolbox-*.whl -d ./wheel
+cat ./wheel/*dist-info/METADATA
+```
+{% endcode %}
+
+{% hint style="info" %}
+If `pip index versions` fails, upgrade pip: `python -m pip install -U pip`. If `pip show` returns nothing, the package is not installed in this env.
+{% endhint %}
+
 ### What’s included
 
 * A CLI: `cipher-tool`.
@@ -74,4 +147,4 @@ See [Security Policy](project/security.md) for reporting.
 
 ### License
 
-MIT licensed. See [LICENSE](LICENSE/).
+MIT licensed. See [LICENSE](https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox/blob/main/LICENSE/README.md).
