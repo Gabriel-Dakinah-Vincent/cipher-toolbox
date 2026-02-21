@@ -60,7 +60,7 @@ pip install cipher-toolbox
 pip install --upgrade cipher-toolbox
 
 # Install a specific version
-pip install "cipher-toolbox==1.2.3"
+pip install "cipher-toolbox==0.1.3"
 
 # Reinstall (useful for broken environments)
 pip install --force-reinstall cipher-toolbox
@@ -73,10 +73,10 @@ pip uninstall cipher-toolbox
 {% code title="Version pinning (examples)" %}
 ```bash
 # Exact pin (most reproducible)
-pip install "cipher-toolbox==1.2.3"
+pip install "cipher-toolbox==0.1.3"
 
 # Compatible range (allows bugfix updates, blocks majors)
-pip install "cipher-toolbox>=1.2.3,<2"
+pip install "cipher-toolbox>=0.1.3,<2"
 ```
 {% endcode %}
 
