@@ -8,10 +8,25 @@ import argparse
 import sys
 from cipher_tool import encrypt, decrypt
 
+# ---- Telemetry Safe Import ----
+try:
+    from cipher_tool.telemetry import send_telemetry
+except Exception:
+    # If telemetry module not available, disable silently
+    send_telemetry = None
+
+# ---- Safe Version Detection ----
+try:
+    from importlib.metadata import version
+    PACKAGE_VERSION = version("cipher-tool")
+except Exception:
+    PACKAGE_VERSION = "unknown"
+
 
 def list_ciphers():
     """List all available ciphers."""
     from cipher_tool.core.registry import CIPHER_REGISTRY
+    
     
     print("Available ciphers:")
     print("\nClassical Substitution Ciphers:")
@@ -54,7 +69,7 @@ Examples:
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
     
     # List command
-    list_parser = subparsers.add_parser('list', help='List available ciphers')
+    subparsers.add_parser('list', help='List available ciphers')
     
     # Encrypt command
     encrypt_parser = subparsers.add_parser('encrypt', help='Encrypt text')
@@ -107,9 +122,19 @@ Examples:
         if args.command == 'encrypt':
             result = encrypt(args.cipher, args.text, **params)
             print(f"Encrypted: {result}")
+
+            # ---- Telemetry (safe & silent) ----
+            if send_telemetry:
+                send_telemetry("encrypt", PACKAGE_VERSION)
+
         elif args.command == 'decrypt':
             result = decrypt(args.cipher, args.text, **params)
             print(f"Decrypted: {result}")
+
+            # ---- Telemetry (safe & silent) ----
+            if send_telemetry:
+                send_telemetry("decrypt", PACKAGE_VERSION)
+
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)

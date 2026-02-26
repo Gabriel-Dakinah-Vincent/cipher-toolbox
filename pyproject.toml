@@ -4,14 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cipher-toolbox"
-version = "0.1.4"
+version = "0.1.7"
 description = "Educational cipher toolbox for encryption and decryption"
 authors = [
-    { name="Gabriel Dakinah Vincent", email="gabriel@example.com" }
+    { name = "Gabriel Dakinah Vincent", email = "gabriel@example.com" }
 ]
 readme = "README.md"
-license = "MIT"
+license = { text = "MIT" }
 requires-python = ">=3.9"
+
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Education",
@@ -23,11 +24,24 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Security :: Cryptography",
-    "Topic :: Education",
+    "Topic :: Education"
 ]
-keywords = ["cryptography", "cipher", "encryption", "decryption", "education", "caesar", "vigenere", "aes", "rsa"]
+
+keywords = [
+    "cryptography",
+    "cipher",
+    "encryption",
+    "decryption",
+    "education",
+    "caesar",
+    "vigenere",
+    "aes",
+    "rsa"
+]
+
 dependencies = [
-    "cryptography>=41.0.0"
+    "cryptography>=41.0.0",
+    "requests>=2.31.0"
 ]
 
 [project.urls]
@@ -44,7 +58,7 @@ dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "build>=0.10.0",
-    "twine>=4.0.0",
+    "twine>=4.0.0"
 ]
 
 [tool.setuptools.packages.find]
