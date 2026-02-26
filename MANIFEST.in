@@ -1,3 +1,5 @@
+# Include the telemetry key file in the package
+include cipher_tool/telemetry/key.py
 include README.md
 include LICENSE
 include CHANGELOG.md

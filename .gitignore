@@ -1,3 +1,5 @@
+# Ignore the telemetry API key file
+cipher_tool/telemetry/key.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
