@@ -1,11 +1,12 @@
 # Cipher Toolbox
 
-A comprehensive educational cipher toolbox for encryption and decryption, featuring both classical and modern cryptographic algorithms.
+A comprehensive educational cipher toolbox for encryption and decryption, featuring both classical and modern cryptographic algorithms — now with a built-in **MCP (Model Context Protocol) server** for AI assistant integration.
 
 [![PyPI version](https://badge.fury.io/py/cipher-toolbox.svg)](https://badge.fury.io/py/cipher-toolbox)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox/workflows/CI/badge.svg)](https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox/actions)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-green.svg)](https://modelcontextprotocol.io)
 
 ## 🚀 Quick Start
 
@@ -58,7 +59,14 @@ cipher-tool decrypt caesar "KHOOR ZRUOG" --shift 3
 ### From PyPI (Recommended)
 
 ```bash
+# Core library only
 pip install cipher-toolbox
+
+# With MCP server support (for Claude Desktop / AI assistants)
+pip install cipher-toolbox[mcp]
+
+# Everything — dev tools + MCP (for contributors)
+pip install cipher-toolbox[all]
 ```
 
 ### From Source
@@ -67,6 +75,14 @@ pip install cipher-toolbox
 git clone https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox.git
 cd cipher-toolbox
 pip install -e .
+```
+
+### With MCP Server (From Source)
+
+```bash
+git clone https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox.git
+cd cipher-toolbox
+pip install -e .[mcp]
 ```
 
 ### Development Installation
@@ -459,11 +475,454 @@ print(f"Educational example: {demonstration}")
 # from cryptography.fernet import Fernet  # Use this instead
 ```
 
+## 🤖 MCP Server — AI Assistant Integration
+
+Cipher Toolbox includes a built-in **Model Context Protocol (MCP)** server that lets AI assistants like Claude use all 12 ciphers as tools. The MCP server exposes all three MCP primitives: **Tools**, **Resources**, and **Prompts**.
+
+### What is MCP?
+
+The [Model Context Protocol](https://modelcontextprotocol.io) is an open standard that lets AI assistants connect to external tools and data sources. With the Cipher Toolbox MCP server, Claude can encrypt, decrypt, explain ciphers, and run guided cryptography workflows — all directly in your conversation.
+
+### Step 1 — Install with MCP Support
+
+```bash
+pip install cipher-toolbox[mcp]
+```
+
+This installs the core library plus [FastMCP](https://github.com/jlowin/fastmcp), which powers the MCP server.
+
+### Step 2 — Verify the Installation
+
+```bash
+# Check that the cipher-toolbox-mcp command is available
+cipher-toolbox-mcp --help
+```
+
+You should see:
+
+```
+usage: cipher-toolbox-mcp [-h] [--transport {stdio,http}] [--host HOST] [--port PORT]
+
+Cipher Toolbox MCP Server — Tools, Resources, and Prompts.
+
+options:
+  -h, --help            show this help message and exit
+  --transport {stdio,http}
+                        Transport mode (default: stdio)
+  --host HOST
+  --port PORT
+```
+
+### Step 3 — Configure Claude Desktop
+
+Locate your Claude Desktop configuration file:
+
+| OS | Path |
+|----|------|
+| **Windows** | `%APPDATA%\Claude\claude_desktop_config.json` |
+| **macOS** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| **Linux** | `~/.config/Claude/claude_desktop_config.json` |
+
+Open the file (create it if it doesn't exist) and add the `cipher-toolbox` MCP server:
+
+#### Option A — Using the cipher-toolbox-mcp executable (recommended)
+
+First, find the full path:
+
+```bash
+# Windows
+where cipher-toolbox-mcp
+
+# macOS / Linux
+which cipher-toolbox-mcp
+```
+
+Then add it to your config:
+
+```json
+{
+  "mcpServers": {
+    "cipher-toolbox": {
+      "command": "C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\cipher-toolbox-mcp.exe",
+      "args": ["--transport", "stdio"]
+    }
+  }
+}
+```
+
+> **Replace** the `command` path with the actual output from `where cipher-toolbox-mcp` / `which cipher-toolbox-mcp`.
+
+#### Option B — Using Python directly
+
+If Option A doesn't work, point directly to your Python interpreter:
+
+```json
+{
+  "mcpServers": {
+    "cipher-toolbox": {
+      "command": "C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "args": ["-m", "cipher_tool.mcp_server.server", "--transport", "stdio"]
+    }
+  }
+}
+```
+
+> **Important:** Make sure `cipher-toolbox[mcp]` is installed in the same Python environment you reference here.
+
+#### If you already have other MCP servers
+
+Just add `"cipher-toolbox"` inside your existing `mcpServers` object — don't overwrite the others:
+
+```json
+{
+  "mcpServers": {
+    "some-other-server": { "..." : "..." },
+    "cipher-toolbox": {
+      "command": "/path/to/cipher-toolbox-mcp",
+      "args": ["--transport", "stdio"]
+    }
+  }
+}
+```
+
+### Step 4 — Restart Claude Desktop
+
+You must fully quit and reopen Claude Desktop for the config to take effect.
+
+```powershell
+# Windows — kill from PowerShell then reopen
+Get-Process *claude* | Stop-Process -Force
+```
+
+On macOS: **Claude → Quit Claude** (or `Cmd+Q`), then reopen.
+
+### Step 5 — Verify the Connection
+
+Once Claude Desktop reopens:
+
+1. Look for the **tools icon** (🔨 hammer) in the chat input area
+2. Click it — you should see the Cipher Toolbox tools listed
+3. Try a test prompt: **"Encrypt HELLO WORLD using Caesar cipher with shift 3"**
+
+If Claude responds with `KHOOR ZRUOG`, everything is working!
+
+---
+
+### 📋 MCP Primitives Reference
+
+The MCP server exposes **three types of primitives**:
+
+#### Primitive 1 — Tools (26 total)
+
+Tools are functions Claude can call directly. Every cipher has an encrypt and decrypt tool.
+
+**Classical / Substitution (6 tools)**
+
+| Tool | What it does | Parameters |
+|------|-------------|------------|
+| `caesar_encrypt` | Encrypt with Caesar cipher | `text`, `shift` |
+| `caesar_decrypt` | Decrypt with Caesar cipher | `ciphertext`, `shift` |
+| `atbash_encrypt` | Encrypt with Atbash cipher | `text` |
+| `atbash_decrypt` | Decrypt with Atbash cipher | `ciphertext` |
+| `affine_encrypt` | Encrypt with Affine cipher | `text`, `a`, `b` |
+| `affine_decrypt` | Decrypt with Affine cipher | `ciphertext`, `a`, `b` |
+
+**Classical / Polyalphabetic (6 tools)**
+
+| Tool | What it does | Parameters |
+|------|-------------|------------|
+| `vigenere_encrypt` | Encrypt with Vigenère cipher | `text`, `key` |
+| `vigenere_decrypt` | Decrypt with Vigenère cipher | `ciphertext`, `key` |
+| `beaufort_encrypt` | Encrypt with Beaufort cipher | `text`, `key` |
+| `beaufort_decrypt` | Decrypt with Beaufort cipher | `ciphertext`, `key` |
+| `autokey_encrypt` | Encrypt with Autokey cipher | `text`, `key` |
+| `autokey_decrypt` | Decrypt with Autokey cipher | `ciphertext`, `key` |
+
+**Classical / Transposition (4 tools)**
+
+| Tool | What it does | Parameters |
+|------|-------------|------------|
+| `railfence_encrypt` | Encrypt with Rail Fence cipher | `text`, `rails` |
+| `railfence_decrypt` | Decrypt with Rail Fence cipher | `ciphertext`, `rails` |
+| `columnar_encrypt` | Encrypt with Columnar Transposition | `text`, `key` |
+| `columnar_decrypt` | Decrypt with Columnar Transposition | `ciphertext`, `key` |
+
+**Modern / Symmetric (6 tools)**
+
+| Tool | What it does | Parameters | Output |
+|------|-------------|------------|--------|
+| `xor_encrypt` | Encrypt with XOR | `text`, `key` | hex string |
+| `xor_decrypt` | Decrypt with XOR | `ciphertext`, `key` | plain text |
+| `aes_encrypt` | Encrypt with AES-256 | `text`, `key` (optional) | base64 |
+| `aes_decrypt` | Decrypt with AES-256 | `ciphertext`, `key` (optional) | plain text |
+| `chacha20_encrypt` | Encrypt with ChaCha20 | `text`, `key` (optional) | base64 |
+| `chacha20_decrypt` | Decrypt with ChaCha20 | `ciphertext`, `key` (optional) | plain text |
+
+**Modern / Asymmetric (2 tools)**
+
+| Tool | What it does | Parameters | Output |
+|------|-------------|------------|--------|
+| `rsa_encrypt` | Encrypt with RSA | `text`, `key_size` (default 2048) | base64 |
+| `rsa_decrypt` | Decrypt with RSA | `ciphertext`, `key_size` (default 2048) | plain text |
+
+**Utility (2 tools)**
+
+| Tool | What it does | Parameters |
+|------|-------------|------------|
+| `list_ciphers` | List all supported ciphers with parameters | (none) |
+| `fetch_docs` | Fetch documentation for a topic | `topic` (default: "overview") |
+
+#### Primitive 2 — Resources (6 total)
+
+Resources are read-only reference documents Claude can access via `docs://` URIs.
+
+| URI | Content |
+|-----|--------|
+| `docs://overview` | Project summary, cipher catalogue, quick API example |
+| `docs://installation` | pip install steps, Claude Desktop JSON config |
+| `docs://classical-ciphers` | All 8 classical ciphers with code examples |
+| `docs://modern-ciphers` | XOR, AES, ChaCha20, RSA — formats and key handling |
+| `docs://security` | Weakness table, what the library doesn't provide |
+| `docs://parameters` | Table of every cipher's parameters and output format |
+
+#### Primitive 3 — Prompts (8 total)
+
+Prompts are guided workflow templates. In Claude Desktop, you can access them from the **prompt selector** (slash `/` or 📎 icon).
+
+| Prompt | Parameters | What it does |
+|--------|-----------|-------------|
+| `encrypt-message` | `plaintext`, `cipher`, `key_or_params` | Encrypt text, explain the transformation, verify round-trip |
+| `decrypt-message` | `ciphertext`, `cipher`, `key_or_params` | Decrypt text, explain the reversal algorithm |
+| `explain-cipher` | `cipher` | History, algorithm, worked example, strengths, weaknesses |
+| `compare-ciphers` | `cipher_a`, `cipher_b`, `sample_text` | Encrypt with both, comparison table, recommendation |
+| `brute-force-caesar` | `ciphertext` | Try all 25 shifts, identify readable result, explain weakness |
+| `cipher-security-audit` | `cipher` | Classification, key space, known attacks, verdict, alternatives |
+| `encrypt-and-store-workflow` | `plaintext`, `cipher`, `key` | Full encrypt→store→decrypt walkthrough with key management |
+| `cipher-quiz` | `difficulty`, `topic` | 5 scored questions, validated with cipher tools |
+
+---
+
+### 💬 Example Prompts for Claude Desktop
+
+Once the MCP server is connected, try these prompts in Claude Desktop:
+
+#### Basic Encryption & Decryption
+
+```
+Encrypt "HELLO WORLD" using Caesar cipher with shift 3
+```
+
+```
+Decrypt "KHOOR ZRUOG" using Caesar cipher with shift 3
+```
+
+```
+Encrypt "SECRET MESSAGE" with AES
+```
+
+```
+Encrypt "HELLO" with Vigenere cipher using key "KEY"
+```
+
+```
+Encrypt "HELLO" using Atbash cipher
+```
+
+```
+Encrypt "HELLO" with Affine cipher using a=5 and b=8
+```
+
+```
+Encrypt "HELLO WORLD" with Rail Fence cipher using 3 rails
+```
+
+```
+Encrypt "HELLO" with XOR cipher using key "SECRET"
+```
+
+```
+Encrypt "HELLO" with RSA
+```
+
+```
+List all available ciphers
+```
+
+```
+Fetch the documentation for the Caesar cipher
+```
+
+#### Using Resources
+
+```
+Read the overview documentation
+```
+
+```
+Show me the installation guide
+```
+
+```
+What classical ciphers are available?
+```
+
+```
+Show me the security considerations for all ciphers
+```
+
+```
+What parameters does each cipher need?
+```
+
+#### Using Prompt Templates
+
+These trigger the built-in guided workflows:
+
+```
+Use the brute-force-caesar prompt with ciphertext "KHOOR"
+```
+
+```
+Use the explain-cipher prompt for "vigenere"
+```
+
+```
+Use the compare-ciphers prompt to compare caesar and aes
+```
+
+```
+Give me a medium difficulty cipher quiz
+```
+
+```
+Do a security audit of the Caesar cipher
+```
+
+```
+Walk me through encrypting and storing a secret with AES
+```
+
+#### Fun Combo Prompts
+
+```
+Encrypt "ATTACK AT DAWN" with Caesar shift 7, then show me all 25 brute force attempts to crack it
+```
+
+```
+Encrypt the same message with Caesar, Vigenere, and AES — then compare the results
+```
+
+```
+Is the Atbash cipher secure? Do a full security audit
+```
+
+```
+Create a spy scenario: encrypt a secret message with Vigenere, then try to break it
+```
+
+```
+Show me the difference between classical and modern encryption by encrypting "TOP SECRET" with every available cipher
+```
+
+---
+
+### 🔧 Running the MCP Server Manually
+
+#### stdio mode (default — for Claude Desktop)
+
+```bash
+cipher-toolbox-mcp
+# or explicitly:
+cipher-toolbox-mcp --transport stdio
+```
+
+#### HTTP mode (for web-based MCP clients)
+
+```bash
+cipher-toolbox-mcp --transport http --host 0.0.0.0 --port 8000
+```
+
+#### As a Python module
+
+```bash
+python -m cipher_tool.mcp_server.server --transport stdio
+```
+
+---
+
+### 🐛 MCP Troubleshooting
+
+#### "cipher-toolbox-mcp" is not recognized
+
+Make sure you installed with the `[mcp]` extra:
+
+```bash
+pip install cipher-toolbox[mcp]
+```
+
+Then verify:
+
+```bash
+# Windows
+where cipher-toolbox-mcp
+
+# macOS / Linux
+which cipher-toolbox-mcp
+```
+
+#### Claude Desktop doesn't show the tools
+
+1. **Check the config path** — make sure `claude_desktop_config.json` is a file, not a directory
+2. **Check the command path** — run the exact `command` from your config in a terminal to see if it errors
+3. **Check the logs** — Claude Desktop logs are at:
+   - Windows: `%APPDATA%\Claude\logs\mcp*.log`
+   - macOS: `~/Library/Logs/Claude/mcp*.log`
+4. **Restart fully** — make sure Claude Desktop is completely quit (check system tray on Windows)
+
+#### ImportError: fastmcp not found
+
+The MCP server requires `fastmcp`. Make sure it's installed in the **same Python environment** that Claude Desktop uses:
+
+```bash
+# Check which Python Claude Desktop will use
+python -c "import fastmcp; print(fastmcp.__version__)"
+```
+
+If you have multiple Python versions, install in the correct one:
+
+```bash
+# Example for Python 3.13 on Windows
+py -3.13 -m pip install cipher-toolbox[mcp]
+```
+
+#### Server starts but Claude can't connect
+
+Try the alternative config using Python directly:
+
+```json
+{
+  "mcpServers": {
+    "cipher-toolbox": {
+      "command": "python",
+      "args": ["-m", "cipher_tool.mcp_server.server", "--transport", "stdio"]
+    }
+  }
+}
+```
+
+---
+
 ## 🧪 Testing
 
 ```bash
-# Run all tests
+# Run all tests (cipher tests + MCP tests)
 pytest tests/ -v
+
+# Run only cipher tests
+pytest tests/test_ciphers.py -v
+
+# Run only MCP server tests (requires fastmcp)
+pytest tests/test_mcp_server.py -v
 
 # Run tests with coverage
 pytest tests/ --cov=cipher_tool
@@ -471,6 +930,8 @@ pytest tests/ --cov=cipher_tool
 # Run specific cipher tests
 pytest tests/test_ciphers.py::test_caesar_cipher -v
 ```
+
+> **Note:** MCP tests are automatically skipped if `fastmcp` is not installed. Install with `pip install cipher-toolbox[mcp]` to run them.
 
 ## 🤝 Contributing
 
@@ -492,10 +953,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed instructions on adding new c
 ## 📊 Project Stats
 
 - **12 Cipher Implementations**: Classical and modern algorithms
-- **100% Test Coverage**: All ciphers thoroughly tested
+- **MCP Server**: 26 tools, 6 resources, 8 prompts for AI assistant integration
+- **100% Test Coverage**: All ciphers and MCP primitives thoroughly tested
 - **Cross-Platform**: Works on Windows, macOS, and Linux
 - **Python 3.9+**: Modern Python support
-- **CLI + API**: Both command-line and programmatic interfaces
+- **CLI + API + MCP**: Command-line, programmatic, and AI assistant interfaces
 
 ## 🔗 Related Projects
 

@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cipher-toolbox"
-version = "0.1.4"
+version = "0.1.5"
 description = "Educational cipher toolbox for encryption and decryption"
 authors = [
-    { name="Gabriel Dakinah Vincent", email="gabriel@example.com" }
+    { name="Gabriel Dakinah Vincent", email="gabrieldvincent0100@outlook.com" }
 ]
 readme = "README.md"
 license = "MIT"
@@ -25,7 +25,10 @@ classifiers = [
     "Topic :: Security :: Cryptography",
     "Topic :: Education",
 ]
-keywords = ["cryptography", "cipher", "encryption", "decryption", "education", "caesar", "vigenere", "aes", "rsa"]
+keywords = [
+    "cryptography", "cipher", "encryption", "decryption",
+    "education", "caesar", "vigenere", "aes", "rsa", "mcp",
+]
 dependencies = [
     "cryptography>=41.0.0"
 ]
@@ -34,10 +37,12 @@ dependencies = [
 Homepage = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox"
 Repository = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox"
 Issues = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox/issues"
-Documentation = "https://github.com/Gabriel-Dakinah-Vincent/cipher-toolbox#readme"
+Documentation = "https://eadmiral.gitbook.io/cipher-toolbox"
+Blog = "https://medium.com/@gabriel-dakinah-vincent/building-a-comprehensive-cipher-toolbox-from-classical-cryptography-to-modern-encryption-c9b4949191d1"
 
 [project.scripts]
 cipher-tool = "cipher_tool.cli:main"
+cipher-toolbox-mcp = "cipher_tool.mcp_server.server:cli_main"
 
 [project.optional-dependencies]
 dev = [
@@ -45,6 +50,20 @@ dev = [
     "pytest-cov>=4.0.0",
     "build>=0.10.0",
     "twine>=4.0.0",
+]
+
+# MCP server support
+mcp = [
+    "fastmcp>=2.0.0",
+]
+
+# Everything at once (CI / contributors)
+all = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
+    "fastmcp>=2.0.0",
 ]
 
 [tool.setuptools.packages.find]
