@@ -35,7 +35,8 @@ jobs:
         cipher-tool encrypt caesar "HELLO" --shift 3
         cipher-tool decrypt caesar "KHOOR" --shift 3
 
-    - name: Test MCP CLI
+    - name: Test MCP CLI (3.10+)
+      if: matrix.python-version != '3.9'
       run: cipher-toolbox-mcp --help
 
   build:
