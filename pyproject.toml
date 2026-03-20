@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cipher-toolbox"
-version = "0.1.5"
+version = "0.1.9"
 description = "Educational cipher toolbox for encryption and decryption"
 authors = [
     { name="Gabriel Dakinah Vincent", email="gabrieldvincent0100@outlook.com" }
